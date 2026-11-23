@@ -1,0 +1,11 @@
+{
+  "name": "festival-scienza-asproni-fermi-visione",
+  "version": "1.0.0",
+  "description": "Sito web interattivo sul tema della Visione per il Festival della Scienza - IIS Asproni-Fermi di Iglesias",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "IIS G. Asproni - E. Fermi, Iglesias (5A INF)",
+  "license": "MIT"
+}
