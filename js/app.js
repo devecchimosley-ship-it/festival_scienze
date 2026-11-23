@@ -544,23 +544,71 @@ function initAnatomyExplorer() {
   drawAnatomySimulator();
 }
 
+const FALLBACK_FACTS = [
+  {
+    id: 1,
+    title: "🎨 Dentro l'occhio abbiamo 2 squadre di super-eroi!",
+    badge: "Coni & Bastoncelli",
+    summary: "Sul fondo dell'occhio (la Retina) ci sono i CONI, che si accendono di giorno per farci vedere tutti i colori, e i BASTONCELLI, che lavorano al buio come visori notturni!",
+    formula: "💡 Rosso + Verde + Blu = Tutti i colori che vedi!"
+  },
+  {
+    id: 2,
+    title: "🙃 Lo sapevi che i tuoi occhi vedono tutto a testa in giù?",
+    badge: "Il Segreto della Lente",
+    summary: "La lente dentro l'occhio (il Cristallino) proietta le immagini CAPOVOLTE sul fondo dell'occhio, proprio come un cinema! È il nostro cervello che rimette tutto dritto in un lampo!",
+    formula: "👁️ Occhio (Capovolto) ➔ 🧠 Cervello (Dritto!)"
+  },
+  {
+    id: 3,
+    title: "🌈 La Luce Bianca nasconde un Arcobaleno!",
+    badge: "Magia dei Colori",
+    summary: "La luce del Sole sembra bianca o trasparente, ma se attraversa un cristallo (Prisma) o le goccioline di pioggia si divide in 7 colori meravigliosi!",
+    formula: "☀️ Luce Bianca = 🌈 Tutti i colori dell'arcobaleno"
+  },
+  {
+    id: 4,
+    title: "🕳️ Tutti abbiamo un 'Punto Invisibile' nell'occhio!",
+    badge: "Trucco del Cervello",
+    summary: "C'è un piccolo punto nell'occhio dove parte il cavo che va al cervello (Nervo Ottico): lì non possiamo vedere nulla, ma il cervello colora il buco usando la fantasia!",
+    formula: "🪄 Provalo nel gioco n°3 dei Ragazzi!"
+  }
+];
+
 async function loadScienceFacts() {
   const container = document.getElementById('factsContainer');
   if (!container) return;
+  let facts = null;
   try {
     const res = await fetch('/api/facts');
-    const facts = await res.json();
-    container.innerHTML = facts.map(f => `
-      <article class="fact-card">
-        <span class="fact-badge">${f.badge}</span>
-        <h4>${f.title}</h4>
-        <p style="color:var(--card-muted); font-weight:600; font-size:0.95rem;">${f.summary}</p>
-        <div class="fact-formula">${f.formula}</div>
-      </article>
-    `).join('');
+    if (res.ok) facts = await res.json();
+  } catch (e) {}
+  if (!Array.isArray(facts)) facts = FALLBACK_FACTS;
+
+  container.innerHTML = facts.map(f => `
+    <article class="fact-card">
+      <span class="fact-badge">${f.badge}</span>
+      <h4>${f.title}</h4>
+      <p style="color:var(--card-muted); font-weight:600; font-size:0.95rem;">${f.summary}</p>
+      <div class="fact-formula">${f.formula}</div>
+    </article>
+  `).join('');
+}
+
+function getLocalLeaderboard() {
+  try {
+    const raw = localStorage.getItem('festival_local_leaderboard');
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
   } catch (e) {
-    container.innerHTML = '<p>Impossibile caricare i dati dal server.</p>';
+    return [];
   }
+}
+
+function saveLocalLeaderboard(list) {
+  try {
+    localStorage.setItem('festival_local_leaderboard', JSON.stringify(list));
+  } catch (e) {}
 }
 
 function escapeHtml(str) {
@@ -579,35 +627,42 @@ async function loadLeaderboard(filter = 'all') {
   const tbody = document.getElementById('leaderboardTableBody');
   if (!tbody) return;
 
+  let rows = null;
   try {
     const res = await fetch(`/api/leaderboard?category=${encodeURIComponent(filter)}`);
-    const rows = await res.json();
-    if (!Array.isArray(rows) || rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Nessun punteggio ancora registrato in questa categoria!</td></tr>';
-      return;
-    }
+    if (res.ok) rows = await res.json();
+  } catch (e) {}
 
-    tbody.innerHTML = rows.map((r, idx) => {
-      const medal = idx === 0 ? '🥇' : (idx === 1 ? '🥈' : (idx === 2 ? '🥉' : `${idx + 1}°`));
-      const classeText = r.classe ? escapeHtml(r.classe) : '—';
-      const safeId = escapeHtml(String(r.id));
-      return `
-        <tr>
-          <td><strong>${medal}</strong></td>
-          <td><strong>${escapeHtml(r.name)}</strong></td>
-          <td><span class="age-badge age-u10">${classeText}</span></td>
-          <td>${escapeHtml(r.game)}</td>
-          <td><strong style="color:#db2777;">${Number(r.score)} pt</strong></td>
-          <td>${escapeHtml(r.detail || '')}</td>
-          <td>
-            <button type="button" class="btn btn-outline" style="padding:0.3rem 0.6rem; font-size:0.85rem; border-color:#ef4444; color:#dc2626;" onclick="deleteLeaderboardEntry('${safeId}')" title="Elimina voce">🗑️</button>
-          </td>
-        </tr>
-      `;
-    }).join('');
-  } catch (e) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Errore nel caricamento della classifica.</td></tr>';
+  if (!Array.isArray(rows)) {
+    rows = getLocalLeaderboard().sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));
+    if (filter && filter !== 'all') {
+      rows = rows.filter(r => r.category === filter);
+    }
   }
+
+  if (!Array.isArray(rows) || rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Nessun punteggio ancora registrato in questa categoria!</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map((r, idx) => {
+    const medal = idx === 0 ? '🥇' : (idx === 1 ? '🥈' : (idx === 2 ? '🥉' : `${idx + 1}°`));
+    const classeText = r.classe ? escapeHtml(r.classe) : '—';
+    const safeId = escapeHtml(String(r.id));
+    return `
+      <tr>
+        <td><strong>${medal}</strong></td>
+        <td><strong>${escapeHtml(r.name)}</strong></td>
+        <td><span class="age-badge age-u10">${classeText}</span></td>
+        <td>${escapeHtml(r.game)}</td>
+        <td><strong style="color:#db2777;">${Number(r.score)} pt</strong></td>
+        <td>${escapeHtml(r.detail || '')}</td>
+        <td>
+          <button type="button" class="btn btn-outline" style="padding:0.3rem 0.6rem; font-size:0.85rem; border-color:#ef4444; color:#dc2626;" onclick="deleteLeaderboardEntry('${safeId}')" title="Elimina voce">🗑️</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 async function deleteLeaderboardEntry(id) {
@@ -619,17 +674,29 @@ async function deleteLeaderboardEntry(id) {
       method: 'DELETE',
       headers: { 'X-Admin-Password': pwd.trim() }
     });
-    const data = await res.json();
-    if (!res.ok) {
-      playSound('error');
-      alert(data.error || 'Impossibile eliminare l\'elemento.');
+    if (res.status === 403 || res.status === 404 || res.ok) {
+      const data = await res.json();
+      if (!res.ok) {
+        playSound('error');
+        alert(data.error || 'Impossibile eliminare l\'elemento.');
+        return;
+      }
+      playSound('success');
+      loadLeaderboard(AppState.leaderboardFilter);
       return;
     }
-    playSound('success');
-    loadLeaderboard(AppState.leaderboardFilter);
-  } catch (e) {
-    alert('Errore di connessione con il server.');
+  } catch (e) {}
+
+  // Fallback statico (GitHub Pages)
+  if (pwd.trim() !== '1618') {
+    playSound('error');
+    alert('Password errata! Accesso negato.');
+    return;
   }
+  const updated = getLocalLeaderboard().filter(item => String(item.id) !== String(id));
+  saveLocalLeaderboard(updated);
+  playSound('success');
+  loadLeaderboard(AppState.leaderboardFilter);
 }
 
 async function saveCategoryScore(category) {
@@ -685,6 +752,7 @@ async function saveCategoryScore(category) {
     return;
   }
 
+  let savedOk = false;
   try {
     const res = await fetch('/api/leaderboard', {
       method: 'POST',
@@ -698,18 +766,35 @@ async function saveCategoryScore(category) {
         detail
       })
     });
-    const data = await res.json();
-    if (!res.ok) {
+    if (res.ok) {
+      savedOk = true;
+    } else if (res.status === 400) {
+      const data = await res.json();
       alert(data.error || 'Errore nel salvataggio.');
       return;
     }
-    playSound('unlock');
-    if (typeof launchConfetti === 'function') launchConfetti();
-    alert(`🏆 Punteggio salvato in classifica!\n\nNome: ${AppState.playerName}\nClasse: ${classe}\nPunti: ${score} pt`);
-    loadLeaderboard(AppState.leaderboardFilter);
-  } catch (e) {
-    alert('Errore di connessione con il server.');
+  } catch (e) {}
+
+  if (!savedOk) {
+    const list = getLocalLeaderboard();
+    list.push({
+      id: Date.now(),
+      name: AppState.playerName,
+      classe,
+      category,
+      game,
+      score,
+      detail,
+      timestamp: new Date().toISOString()
+    });
+    list.sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));
+    saveLocalLeaderboard(list.slice(0, 100));
   }
+
+  playSound('unlock');
+  if (typeof launchConfetti === 'function') launchConfetti();
+  alert(`🏆 Punteggio salvato in classifica!\n\nNome: ${AppState.playerName}\nClasse: ${classe}\nPunti: ${score} pt`);
+  loadLeaderboard(AppState.leaderboardFilter);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
