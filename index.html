@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Festival della Scienza — La Visione | I.I.S. Asproni-Fermi Iglesias</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <canvas id="confettiCanvas"></canvas>
+  <div class="spectrum-bar"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">🦉</div>
+        <div class="brand-text">
+          <p>I.I.S. "G. Asproni - E. Fermi" • Iglesias</p>
+          <h1>🌈 FESTIVAL DELLA SCIENZA — LA VISIONE</h1>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Navigazione principale">
+        <button class="nav-btn active" data-tab="tab-home">🏠 L'Occhio Magico</button>
+        <button class="nav-btn" data-tab="tab-u10">🧒 Bambini (&lt; 10 Anni)</button>
+        <button class="nav-btn" data-tab="tab-u16">🧑 Ragazzi (10–16 Anni)</button>
+        <button class="nav-btn escape-nav" data-tab="tab-escape">🔐 Escape Room (6 Stanze)</button>
+        <button class="nav-btn" data-tab="tab-leaderboard">🏆 Classifica</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Barra Collezione Adesivi Magici con la Mascotte Gufo Ottico -->
+  <div class="sticker-bar">
+    <div class="sticker-bar-inner">
+      <div class="mascot-greeting">
+        <span class="mascot-avatar">🦉</span>
+        <span id="mascotSpeech">Ciao! Sono <strong>Gufo Ottico</strong>! Gioca per collezionare tutti i 6 Adesivi d'Oro!</span>
+      </div>
+      <div class="stickers-list">
+        <span class="sticker-badge" id="badge-rgb">🦎 Mago Colori</span>
+        <span class="sticker-badge" id="badge-animals">🔦 Torcia Magica</span>
+        <span class="sticker-badge" id="badge-stars">⭐ Occhio Stellare</span>
+        <span class="sticker-badge" id="badge-illusions">🤯 Re Illusioni</span>
+        <span class="sticker-badge" id="badge-lenses">👓 Dottor Occhiali</span>
+        <span class="sticker-badge" id="badge-escape">🔐 Super Detective</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- ==================== TAB 1: HOME & ESPLORA L'OCCHIO ==================== -->
+    <section id="tab-home" class="tab-section active">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="school-pill">🎪 Stand Interattivo • I.I.S. "G. Asproni - E. Fermi" di Iglesias</div>
+          <h2>Un Viaggio Fantastico nel Mondo della <span class="gradient-text">Vista e dei Colori!</span></h2>
+          <p>
+            Ciao piccoli scienziati ed esploratori! Siete pronti a giocare con le torce dell'arcobaleno,
+            esplorare il buio, sfidare l'Intelligenza Artificiale a indovinare i vostri disegni (**QuickDraw**) e affrontare la grande **Escape Room a 6 Stanze**?
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="switchTab('tab-u10')">🧒 Giochi Bambini (Sotto i 10 anni)</button>
+            <button class="btn btn-purple" onclick="switchTab('tab-u16')">🧑 Giochi Ragazzi (Fino a 16 anni)</button>
+            <button class="btn btn-escape" onclick="switchTab('tab-escape')">🔐 Grande Escape Room (6 Stanze)</button>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <canvas id="heroEyeCanvas" width="430" height="270"></canvas>
+          <span class="canvas-caption">✨ Muovi il mouse (o il dito) per far girare gli occhietti di Gufo Ottico!</span>
+        </div>
+      </div>
+
+      <!-- Simulatore dell'Occhio spiegato ai bambini -->
+      <div class="section-header">
+        <div>
+          <h2>👁️ Guarda dentro un Occhio Gigante! (Tocca i bottoni!)</h2>
+          <p>Scopri perché l'occhio vede l'alberello a testa in giù e come il cervello lo rimette dritto!</p>
+        </div>
+      </div>
+
+      <div class="anatomy-panel">
+        <div>
+          <canvas id="anatomyCanvas" width="600" height="320"></canvas>
+          <div class="anatomy-buttons" id="anatomyButtons">
+            <button class="part-btn active" data-part="cornea">1. Finestra (Cornea)</button>
+            <button class="part-btn" data-part="pupilla">2. Pupilla e Iride</button>
+            <button class="part-btn" data-part="cristallino">3. Lente (Cristallino)</button>
+            <button class="part-btn" data-part="retina">4. Schermo (Retina)</button>
+            <button class="part-btn" data-part="nervo">5. Cavo verso il Cervello</button>
+          </div>
+        </div>
+
+        <div class="anatomy-info-box">
+          <div>
+            <span class="age-badge age-u10" id="anatomyTag">Tappa #1 • La Finestra dell'Occhio</span>
+            <h3 id="anatomyTitle" style="margin-top:0.7rem;">1. La Cornea: Lo Scudo Trasparente 🛡️</h3>
+            <p id="anatomyDesc" style="color:var(--card-muted); font-weight:600; margin-bottom:1rem;">
+              È come il vetro trasparente del casco di un astronauta! Protegge l'occhio dalla polvere e fa entrare i raggi di luce!
+            </p>
+            <div class="fact-formula" id="anatomyFact">
+              ✨ Lo sapevi? È trasparente come l'acqua pulita!
+            </div>
+          </div>
+
+          <div class="slider-box">
+            <label for="lightIntensitySlider"><strong>🔦 Accendi la Torcia sull'Occhio (Guarda la Pupilla!):</strong></label>
+            <input type="range" id="lightIntensitySlider" min="10" max="100" value="55" />
+            <small style="color:var(--card-muted); font-weight:700;">⬅️ Al buio la pupilla diventa GRANDE | ➡️ Al sole diventa PICCOLISSIMA!</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Curiosità divertenti caricate da Node.js -->
+      <div class="section-header">
+        <div>
+          <h2>🤩 4 Super-Segreti della Vista</h2>
+          <p>Leggi questi segreti prima di iniziare i giochi!</p>
+        </div>
+      </div>
+      <div class="fact-grid" id="factsContainer"></div>
+    </section>
+
+    <!-- ==================== TAB 2: GIOCHI BAMBINI SOTTO I 10 ANNI ==================== -->
+    <section id="tab-u10" class="tab-section">
+      <div class="section-header">
+        <div>
+          <span class="age-badge age-u10">Categoria 1 • Bambini Sotto i 10 Anni</span>
+          <h2 style="margin-top:0.4rem;">🌈 Il Parco Giochi della Luce (6–10 anni)</h2>
+          <p>4 giochi super divertenti: colora Camillo, esplora il bosco buio con la torcia, acchiappa le stelline e disegna con QuickDraw!</p>
+        </div>
+      </div>
+
+      <div class="game-subnav">
+        <button class="subgame-btn active" onclick="switchSubGame('u10', 'u10-rgb', this)">
+          <strong>🦎 1. Camillo il Camaleonte</strong>
+          <span>Accendi le 3 torce magiche per colorare Camillo!</span>
+        </button>
+        <button class="subgame-btn" onclick="switchSubGame('u10', 'u10-flashlight', this)">
+          <strong>🔦 2. La Torcia nel Bosco Buio</strong>
+          <span>Illumina il buio e trova tutti gli amici nascosti!</span>
+        </button>
+        <button class="subgame-btn" onclick="switchSubGame('u10', 'u10-stars', this)">
+          <strong>⭐ 3. Acchiappa la Stellina!</strong>
+          <span>Tocca la casella che brilla più delle altre!</span>
+        </button>
+        <button class="subgame-btn" onclick="switchSubGame('u10', 'u10-quickdraw', this)">
+          <strong>✏️ 4. QuickDraw Bimbi (Disegna!)</strong>
+          <span>Fai un disegno e l'Occhio Robot indovina cos'è!</span>
+        </button>
+      </div>
+
+      <!-- GIOCO U10 - 1: IL MAGO DEI COLORI RGB -->
+      <div id="u10-rgb" class="game-stage active">
+        <div class="game-top-bar">
+          <div>
+            <h3>🦎 Gioco 1: Camillo il Camaleonte e le Torce Magiche!</h3>
+            <p style="color:var(--card-muted); font-weight:700; font-size:0.98rem;">
+              Con la luce succede una magia: <strong>Rosso + Verde fa GIALLO!</strong> Accendi le torce per trasformare il colore di Camillo!
+            </p>
+          </div>
+          <div class="score-pill" id="u10RgbScore">⭐ Punti: 0 / 500</div>
+        </div>
+
+        <div class="rgb-playground">
+          <div>
+            <div class="feedback-banner" id="u10RgbMission" style="margin-top:0; margin-bottom:1rem; font-size:1.18rem;">
+              🎯 Missione 1 di 5: Trasforma Camillo in <strong>GIALLO SOLE 🌟</strong>!
+            </div>
+
+            <div class="torch-controls">
+              <button class="torch-toggle red" id="torchRedBtn" onclick="toggleTorch('r')">
+                <span>🔴 Torcia ROSSA</span>
+                <span id="torchRedState">SPENTA</span>
+              </button>
+              <button class="torch-toggle green" id="torchGreenBtn" onclick="toggleTorch('g')">
+                <span>🟢 Torcia VERDE</span>
+                <span id="torchGreenState">SPENTA</span>
+              </button>
+              <button class="torch-toggle blue" id="torchBlueBtn" onclick="toggleTorch('b')">
+                <span>🔵 Torcia BLU</span>
+                <span id="torchBlueState">SPENTA</span>
+              </button>
+            </div>
+
+            <div style="margin-top:1.2rem; display:flex; gap:0.8rem; flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="verifyRgbMix()">✨ Colora Camillo!</button>
+              <button class="btn btn-purple" onclick="giveRgbKidsHint()">💡 Chiedi a Gufo Ottico!</button>
+              <button class="btn btn-outline" onclick="resetRgbGame()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback-banner" id="u10RgbFeedback">
+              👆 Tocca i bottoni delle torce qui sopra per accenderle!
+            </div>
+          </div>
+
+          <div>
+            <canvas id="rgbCanvas" width="460" height="320"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- GIOCO U10 - 2: ESPLORATORE NEL BOSCO BUIO (TORCIA MAGICA) -->
+      <div id="u10-flashlight" class="game-stage">
+        <div class="game-top-bar">
+          <div>
+            <h3>🔦 Gioco 2: La Torcia Magica nel Buio!</h3>
+            <p style="color:var(--card-muted); font-weight:700; font-size:0.98rem;">
+              Senza luce i nostri occhi non vedono nulla! <strong>Muovi la Torcia Magica nel quadro buio</strong> e <strong>clicca sugli amici</strong> appena li illumini!
+            </p>
+          </div>
+          <div class="score-pill" id="u10FlashlightScore">⭐ Punti: 0</div>
+        </div>
+
+        <div class="feedback-banner" id="u10FlashlightStatus" style="margin-top:0; margin-bottom:1rem; font-size:1.1rem;">
+          🔦 Muovi la torcia per cercare i 5 amici nascosti!
+        </div>
+
+        <canvas id="flashlightCanvas" width="760" height="300" style="width:100%; background:#03050c; border-radius:20px; border:4px solid #facc15; cursor:none; display:block;"></canvas>
+
+        <div style="margin-top:1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem;">
+          <div class="feedback-banner" id="u10FlashlightBasket" style="margin-top:0; flex:1;">
+            🧺 Trovati (0/5): Muovi la torcia e clicca!
+          </div>
+          <button class="btn btn-outline" onclick="initFlashlightGame()">🔄 Nuova Avventura</button>
+        </div>
+      </div>
+
+      <!-- GIOCO U10 - 3: CACCIA ALLA STELLA MAGICA -->
+      <div id="u10-stars" class="game-stage">
+        <div class="game-top-bar">
+          <div>
+            <h3>⭐ Gioco 3: Acchiappa la Stellina Luminosa!</h3>
+            <p style="color:var(--card-muted); font-weight:700; font-size:0.98rem;">
+              Tutte le caselle sembrano uguali, ma <strong>una sola brilla di più!</strong> Toccala per vincere!
+            </p>
+          </div>
+          <div class="score-pill" id="u10StarScore">Livello: 1 | Punti: 0</div>
+        </div>
+
+        <div class="color-grid" id="u10StarGrid"></div>
+
+        <div class="feedback-banner" id="u10StarFeedback" style="text-align:center; font-size:1.08rem;">
+          👆 Tocca la casella con il colore più chiaro!
+        </div>
+      </div>
+
+      <!-- GIOCO U10 - 4: QUICKDRAW BIMBI -->
+      <div id="u10-quickdraw" class="game-stage">
+        <div class="game-top-bar">
+          <div>
+            <h3>✏️ Gioco 4: QuickDraw Bimbi — Disegna e il Robot Indovina!</h3>
+            <p style="color:var(--card-muted); font-weight:700; font-size:0.98rem;">
+              Disegna col mouse (o col dito) quello che ti chiede il gioco in 20 secondi: l'<strong>Occhio Robot</strong> cercherà di indovinare in tempo reale!
+            </p>
+          </div>
+          <div style="display:flex; gap:0.6rem; align-items:center;">
+            <div class="score-pill" id="qdTimer-u10" style="background:#f59e0b; border-color:#b45309;">⏱️ 20s</div>
+            <div class="score-pill" id="qdScore-u10">⭐ Punti: 0</div>
+          </div>
+        </div>
+
+        <div class="feedback-banner" id="qdPrompt-u10" style="margin-top:0; margin-bottom:1rem; font-size:1.2rem; background:#fef9c3; border-color:#eab308; color:#713f12;">
+          ✏️ Disegna: <strong>UN SOLE ☀️</strong>
+        </div>
+
+        <div class="rgb-playground" style="grid-template-columns: 1.4fr 0.6fr;">
+          <div>
+            <canvas id="qdCanvas-u10" width="540" height="310" style="width:100%; border-radius:20px; border:5px solid #facc15; cursor:crosshair; display:block; background:#fffbeb;"></canvas>
+            <div style="margin-top:0.9rem; display:flex; gap:0.7rem; flex-wrap:wrap;">
+              <button class="btn btn-outline" onclick="clearQuickDrawPad('u10')">🧹 Cancella Lavagna</button>
+              <button class="btn btn-purple" onclick="skipQuickDrawRound('u10')">⏭️ Cambia Disegno</button>
+              <button class="btn btn-primary" onclick="initQuickDraw('u10')">🔄 Nuova Partita</button>
+            </div>
+          </div>
+
+          <div style="text-align:center; background:#f8fafc; padding:1.1rem; border-radius:20px; border:3px solid #cbd5e1;">
+            <strong style="color:#1e1b4b; display:block; margin-bottom:0.5rem;">🤖 Come ti vede l'Occhio Robot (Pixel 16×16):</strong>
+            <canvas id="qdMatrix-u10" width="180" height="180" style="width:170px; height:170px; margin:0 auto; border-radius:14px; border:3px solid #38bdf8; display:block;"></canvas>
+            <small style="color:var(--card-muted); font-weight:700; display:block; margin-top:0.5rem;">
+              Il computer trasforma il tuo disegno in quadratini luminosi per riconoscerlo!
+            </small>
+          </div>
+        </div>
+
+        <div class="feedback-banner" id="qdAiSpeech-u10" style="font-size:1.12rem;">
+          🤖 <strong>Occhio IA:</strong> "Inizia a disegnare sulla lavagna gialla... sto guardando!"
+        </div>
+      </div>
+
+      <div class="save-score-bar">
+        <div>
+          <strong>🏆 Salva il tuo Punteggio Totale Bambini in Classifica!</strong>
+          <div style="font-size:0.88rem; margin-top:0.2rem;">
+            Nome auto-generato: <strong class="js-player-name">...</strong> • Classe:
+            <input type="text" class="input-text js-player-class" placeholder="Es. 4A" style="width:105px; padding:0.4rem 0.65rem; text-transform:uppercase;" oninput="syncPlayerClass(this.value)" />
+            <button type="button" class="btn btn-outline" style="padding:0.4rem 0.7rem; font-size:0.85rem;" onclick="regeneratePlayerName()">🎲 Cambia Nome</button>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="saveCategoryScore('u10')">💾 Salva in Classifica</button>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: GIOCHI RAGAZZI FINO AI 16 ANNI ==================== -->
+    <section id="tab-u16" class="tab-section">
+      <div class="section-header">
+        <div>
+          <span class="age-badge age-u16">Categoria 2 • Ragazzi Fino ai 16 Anni (10–16 anni)</span>
+          <h2 style="margin-top:0.4rem;">🧑 Sfide Ottiche: Illusioni, Lenti, Percezione & QuickDraw AI!</h2>
+          <p>4 sfide interattive: doma le illusioni ottiche, metti a fuoco le lenti, scopri il Punto Cieco e sfida la Computer Vision!</p>
+        </div>
+      </div>
+
+      <div class="game-subnav">
+        <button class="subgame-btn active" onclick="switchSubGame('u16', 'u16-illusions', this)">
+          <strong>🤯 1. Occhio vs Cervello (Illusioni)</strong>
+          <span>Pareggia le figure a occhio nudo e controlla col Righello Laser!</span>
+        </button>
+        <button class="subgame-btn" onclick="switchSubGame('u16', 'u16-lenses', this)">
+          <strong>👓 2. Dottor Occhiali (Messa a Fuoco)</strong>
+          <span>Trova la lente giusta per far sparire la sfocatura!</span>
+        </button>
+        <button class="subgame-btn" onclick="switchSubGame('u16', 'u16-cones', this)">
+          <strong>🦅 3. Vista da Falco & Pallino Invisibile</strong>
+          <span>Sfida i tuoi coni visivi + fai sparire un pallino con un occhio!</span>
+        </button>
+        <button class="subgame-btn" onclick="switchSubGame('u16', 'u16-quickdraw', this)">
+          <strong>🤖 4. QuickDraw AI (Computer Vision)</strong>
+          <span>Disegna strumenti ottici e guarda la matrice neurale 16×16!</span>
+        </button>
+      </div>
+
+      <!-- GIOCO U16 - 1: SFIDA DELLE ILLUSIONI OTTICHE -->
+      <div id="u16-illusions" class="game-stage active">
+        <div class="game-top-bar">
+          <div>
+            <h3 id="illusionTitle">🤯 Sfida 1/5: Le Frecce Ingannatrici</h3>
+            <p id="illusionDesc" style="color:var(--card-muted); font-weight:700; font-size:0.95rem;">
+              Le punte delle frecce ingannano il cervello! Muovi il cursore finché la linea gialla sotto ti sembra LUNGA UGUALE a quella azzurra sopra!
+            </p>
+          </div>
+          <div class="score-pill" id="u16IllusionScore">⭐ Punti: 0</div>
+        </div>
+
+        <canvas id="illusionCanvas" width="780" height="300"></canvas>
+
+        <div class="slider-box">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label for="illusionSlider"><strong>🎛️ Muovi il cursore finché ti sembrano uguali (senza numeri!):</strong></label>
+            <span id="illusionSliderVal" style="color:#db2777; font-weight:900;">👁️ A occhio nudo</span>
+          </div>
+          <input type="range" id="illusionSlider" min="80" max="320" value="150" oninput="onIllusionSliderChange()" />
+          <div style="display:flex; gap:0.8rem; margin-top:0.8rem; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="verifyIllusionBtn" onclick="verifyIllusionMeasurement()">📏 Controlla col Righello Laser!</button>
+            <button class="btn btn-purple" id="nextIllusionBtn" onclick="nextIllusionRound()" style="display:none;">➡️ Prossima Illusione!</button>
+            <button class="btn btn-outline" onclick="initIllusionGame()">🔄 Ricomincia</button>
+          </div>
+        </div>
+
+        <div class="feedback-banner" id="u16IllusionFeedback">
+          Fai a occhio senza misurare con le dita sullo schermo, poi premi <strong>Controlla col Righello Laser!</strong>
+        </div>
+      </div>
+
+      <!-- GIOCO U16 - 2: DOTTOR OCCHIALI (LENTI E MESSA A FUOCO) -->
+      <div id="u16-lenses" class="game-stage">
+        <div class="game-top-bar">
+          <div>
+            <h3>👓 Gioco 2: Dottor Occhiali — Metti a Fuoco la Vista!</h3>
+            <p style="color:var(--card-muted); font-weight:700; font-size:0.95rem;">
+              Muovi il cursore degli occhiali finché i raggi si uniscono esattamente sul <strong>Pallino Verde in fondo all'occhio</strong> e la scritta a destra diventa nitidissima!
+            </p>
+          </div>
+          <div class="score-pill" id="u16LensScore">Pazienti Aiutati: 0 / 5 (0 pt)</div>
+        </div>
+
+        <div class="feedback-banner" id="lensPatientCase" style="margin-top:0; margin-bottom:1rem;">
+          🩺 <strong>Caso 1 di 5:</strong> Marco non legge bene la lavagna da lontano! Trova la lente giusta!
+        </div>
+
+        <canvas id="lensCanvas" width="780" height="310"></canvas>
+
+        <div class="slider-box">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label for="diopterSlider"><strong>👓 1. Potenza Lente (Diottrie Sfera):</strong></label>
+            <span id="diopterDisplay" style="color:#db2777; font-weight:900; font-size:1.1rem;">0.00 D</span>
+          </div>
+          <input type="range" id="diopterSlider" min="-8.0" max="8.0" step="0.25" value="0" oninput="onDiopterChange()" />
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.7rem;">
+            <label for="astigmatismSlider"><strong>🧭 2. Asse Astigmatismo (0° – 180°):</strong></label>
+            <span id="astigmatismDisplay" style="color:#7c3aed; font-weight:900; font-size:1.05rem;">90°</span>
+          </div>
+          <input type="range" id="astigmatismSlider" min="0" max="180" step="5" value="90" oninput="onDiopterChange()" />
+          <div style="display:flex; gap:0.8rem; margin-top:0.8rem; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="verifyLensCorrection()">✅ Consegna gli Occhiali!</button>
+            <button class="btn btn-outline" onclick="initLensGame()">🔄 Ricomincia</button>
+          </div>
+        </div>
+
+        <div class="feedback-banner" id="u16LensFeedback">
+          💡 Regola sia le <strong>Diottrie</strong> (per portare il punto rosso sul bersaglio verde) sia l'<strong>Asse</strong> (per eliminare lo sdoppiamento della scritta), poi premi Consegna gli Occhiali!
+        </div>
+      </div>
+
+      <!-- GIOCO U16 - 3: VISTA DA FALCO & MAGIA DEL PUNTO CIECO -->
+      <div id="u16-cones" class="game-stage">
+        <div class="game-top-bar">
+          <div>
+            <h3>🦅 Gioco 3: Vista da Falco & Il Trucco del Pallino che Sparisce</h3>
+            <p style="color:var(--card-muted); font-weight:700; font-size:0.95rem;">
+              Quanti livelli riesci a superare? Clicca sul quadratino di colore diverso: a ogni livello diventa sempre più mimetizzato!
+            </p>
+          </div>
+          <div class="score-pill" id="u16ConeScore">Livello: 1 | Punti: 0</div>
+        </div>
+
+        <div class="color-grid" id="u16ConeGrid"></div>
+
+        <div class="feedback-banner" id="u16ConeFeedback" style="text-align:center;">
+          Clicca sul quadratino diverso per salire di livello!
+        </div>
+
+        <!-- Esperimento Magico del Punto Cieco -->
+        <div style="margin-top:1.8rem; padding:1.4rem; background:#f8fafc; border-radius:18px; border:4px solid #38bdf8;">
+          <h4 style="color:#1e1b4b; font-size:1.2rem;">🪄 Trucco di Magia Scientifica: Fai sparire il Pallino Giallo senza toccarlo!</h4>
+          <p style="color:var(--card-muted); font-weight:700; font-size:0.95rem; margin:0.4rem 0 1rem;">
+            1️⃣ Copri con la mano l'<strong>OCCHIO SINISTRO</strong>.<br/>
+            2️⃣ Con l'occhio destro guarda <strong>FISSO SOLO LA CROCE BIANCA (+)</strong> a sinistra.<br/>
+            3️⃣ Muovi piano il cursore qui sotto: a un certo punto il pallino giallo <strong>SPARIRÀ NEL NULLA!</strong>
+          </p>
+          <canvas id="blindSpotCanvas" width="760" height="130" style="width:100%; background:#090d24; border-radius:14px; border:3px solid #38bdf8;"></canvas>
+          <div class="slider-box" style="margin-top:0.7rem;">
+            <label for="blindSpotSlider"><strong>↔️ Sposta piano il pallino giallo finché sparisce (guardando sempre la croce +):</strong></label>
+            <input type="range" id="blindSpotSlider" min="150" max="700" value="440" oninput="drawBlindSpotCanvas()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- GIOCO U16 - 4: QUICKDRAW AI VISION (10-16 ANNI) -->
+      <div id="u16-quickdraw" class="game-stage">
+        <div class="game-top-bar">
+          <div>
+            <h3>🤖 Gioco 4: QuickDraw AI — Sfida la Visione Artificiale!</h3>
+            <p style="color:var(--card-muted); font-weight:700; font-size:0.95rem;">
+              Come fa un computer a "vedere" un disegno? Mentre tracci un oggetto ottico in 20 secondi, osserva come il sensore estrae la matrice <strong>16×16 pixel</strong> e calcola simmetria e contorni!
+            </p>
+          </div>
+          <div style="display:flex; gap:0.6rem; align-items:center;">
+            <div class="score-pill" id="qdTimer-u16" style="background:#f59e0b; border-color:#b45309;">⏱️ 20s</div>
+            <div class="score-pill" id="qdScore-u16">⭐ Punti: 0</div>
+          </div>
+        </div>
+
+        <div class="feedback-banner" id="qdPrompt-u16" style="margin-top:0; margin-bottom:1rem; font-size:1.15rem;">
+          ✏️ Disegna: <strong>UN PAIO DI OCCHIALI 👓</strong>
+        </div>
+
+        <div class="rgb-playground" style="grid-template-columns: 1.4fr 0.6fr;">
+          <div>
+            <canvas id="qdCanvas-u16" width="540" height="310" style="width:100%; border-radius:20px; border:5px solid #38bdf8; cursor:crosshair; display:block; background:#090d24;"></canvas>
+            <div style="margin-top:0.9rem; display:flex; gap:0.7rem; flex-wrap:wrap;">
+              <button class="btn btn-outline" onclick="clearQuickDrawPad('u16')">🧹 Pulisci Sensore</button>
+              <button class="btn btn-purple" onclick="skipQuickDrawRound('u16')">⏭️ Prossimo Oggetto</button>
+              <button class="btn btn-primary" onclick="initQuickDraw('u16')">🔄 Nuova Sfida AI</button>
+            </div>
+          </div>
+
+          <div style="text-align:center; background:#0f172a; color:#f8fafc; padding:1.1rem; border-radius:20px; border:3px solid #38bdf8;">
+            <strong style="color:#38bdf8; display:block; margin-bottom:0.5rem;">👁️‍🗨️ Campionamento Rete Neurale (16×16):</strong>
+            <canvas id="qdMatrix-u16" width="180" height="180" style="width:170px; height:170px; margin:0 auto; border-radius:14px; border:2px solid #22c55e; display:block;"></canvas>
+            <small style="color:#94a3b8; font-weight:600; display:block; margin-top:0.5rem;">
+              La Computer Vision normalizza il tuo tratto in un tensore binario 16×16 ed estrae angoli e rapporti d'aspetto!
+            </small>
+          </div>
+        </div>
+
+        <div class="feedback-banner" id="qdAiSpeech-u16" style="font-size:1.1rem;">
+          🤖 <strong>Computer Vision AI:</strong> "Inizia a tracciare sul pad ottico scuro..."
+        </div>
+      </div>
+
+      <div class="save-score-bar">
+        <div>
+          <strong>🏆 Salva il tuo Punteggio Totale Ragazzi in Classifica!</strong>
+          <div style="font-size:0.88rem; margin-top:0.2rem;">
+            Nome auto-generato: <strong class="js-player-name">...</strong> • Classe:
+            <input type="text" class="input-text js-player-class" placeholder="Es. 3B" style="width:105px; padding:0.4rem 0.65rem; text-transform:uppercase;" oninput="syncPlayerClass(this.value)" />
+            <button type="button" class="btn btn-outline" style="padding:0.4rem 0.7rem; font-size:0.85rem;" onclick="regeneratePlayerName()">🎲 Cambia Nome</button>
+          </div>
+        </div>
+        <button class="btn btn-purple" onclick="saveCategoryScore('u16')">💾 Salva in Classifica</button>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: GRANDE ESCAPE ROOM A 6 STANZE (10-15 MINUTI) ==================== -->
+    <section id="tab-escape" class="tab-section">
+      <div class="section-header">
+        <div>
+          <span class="age-badge age-escape">Missione Complessa a 6 Stanze • Durata 10–15 Minuti</span>
+          <h2 style="margin-top:0.4rem;">🔐 Grande Escape Room: "Il Mistero del Laboratorio Ottico Asproni-Fermi"</h2>
+          <p>
+            Il Laboratorio Centrale di Ottica è bloccato da un sistema di sicurezza a <strong>6 Livelli</strong>!
+            Esplora le 6 stanze, raccogli gli strumenti ottici nello zaino e trova il <strong>Codice Maestro a 6 Cifre</strong>!
+          </p>
+        </div>
+      </div>
+
+      <!-- HUD Escape Room a 6 Cifre + Zaino Strumenti -->
+      <div class="escape-hud">
+        <div>
+          <div style="font-size:0.85rem; text-transform:uppercase; color:#db2777; font-weight:900;">⏱️ Timer Missione</div>
+          <div class="timer-box" id="escapeTimerDisplay">15:00</div>
+        </div>
+
+        <div>
+          <div style="font-size:0.9rem; color:#1e1b4b; margin-bottom:0.35rem; text-align:center; font-weight:900;">🔑 Codice Maestro a 6 Cifre:</div>
+          <div class="code-slots">
+            <div class="code-slot" id="slotDigit1">?</div>
+            <div class="code-slot" id="slotDigit2">?</div>
+            <div class="code-slot" id="slotDigit3">?</div>
+            <div class="code-slot" id="slotDigit4">?</div>
+            <div class="code-slot" id="slotDigit5">?</div>
+            <div class="code-slot" id="slotDigit6">?</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <button class="btn btn-purple" onclick="showEscapeHint()">💡 Guida del Gufo</button>
+          <button class="btn btn-escape" onclick="resetEscapeRoom()">🔄 Riavvia (15:00)</button>
+        </div>
+      </div>
+
+      <div class="feedback-banner" style="margin-top:0; margin-bottom:0.9rem; background:#fef9c3; border-color:#eab308; color:#713f12;">
+        🎒 <strong>Zaino degli Strumenti Ottici Raccolti:</strong>
+        <span id="escapeInventoryList"><span style="color:var(--card-muted);">Nessuno strumento ancora raccolto... risolvi le stanze!</span></span>
+      </div>
+
+      <div class="feedback-banner" id="escapeGlobalMessage" style="margin-top:0; margin-bottom:1.5rem; font-size:1.05rem;">
+        🕵️ <strong>Diario di Missione:</strong> Risolvi tutti e 6 gli enigmi sperimentali qui sotto per sbloccare la Porta Blindata!
+      </div>
+
+      <!-- 6 STANZE MULTI-STEP DELL'ESCAPE ROOM -->
+      <div class="escape-rooms-grid">
+        <!-- STANZA 1: LABIRINTO LASER 7x5 CON TRAPPOLE E 4 PORTE D'USCITA -->
+        <div class="room-card" id="roomCard1">
+          <span class="room-status" id="roomStatus1">🔒 Bloccata</span>
+          <h3>🪞 Stanza 1: Labirinto Laser (Frammento 🔵 BLU)</h3>
+          <p style="color:var(--card-muted); font-weight:700; font-size:0.9rem; margin:0.4rem 0 0.7rem;">
+            <strong>Clicca sugli specchi azzurri</strong> per ruotarli! Il raggio deve attraversare <strong>R, G e B</strong> senza mai colpire le trappole 💀 e raggiungere una delle 4 porte a destra (<strong>USCITA 2, 4, 6 o 8</strong>). Su quale porta d'uscita arriva il raggio verde?
+          </p>
+          <canvas id="escapeLaserCanvas" width="510" height="230" style="width:100%; background:#060a17; border-radius:16px; border:3px solid #38bdf8; cursor:pointer; display:block;"></canvas>
+          <div class="slider-box" style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap; margin-top:0.7rem;">
+            <input type="number" id="room1PortInput" class="input-text" placeholder="N° Porta d'Uscita (2, 4, 6, 8)" style="flex:1;" />
+            <button class="btn btn-primary" onclick="checkRoom1()">🔓 Sblocca Stanza 1</button>
+          </div>
+        </div>
+
+        <!-- STANZA 2: DECODIFICATORE A 4 FILTRI OTTICI (R, G, B, UV) -->
+        <div class="room-card" id="roomCard2">
+          <span class="room-status" id="roomStatus2">🔒 Bloccata</span>
+          <h3>🔴🟢🔵🟣 Stanza 2: I 4 Filtri & Trappole (Frammento 🔴 ROSSO)</h3>
+          <p style="color:var(--card-muted); font-weight:700; font-size:0.9rem; margin:0.4rem 0 0.6rem;">
+            Esplora il quadro con i <strong>4 Filtri</strong>: ignora i falsi indizi "TRAPPOLA", trova solo i valori marchiati <strong>[VERO]</strong> per <strong>▲, ●, ■</strong> e usa il <strong>Filtro UV 🟣</strong> al centro per leggere la formula segreta!
+          </p>
+          <div style="display:flex; gap:0.4rem; margin-bottom:0.6rem; flex-wrap:wrap;">
+            <button class="part-btn active" id="filterBtn-r" onclick="setRoom2Filter('r')">🔴 Rosso (▲)</button>
+            <button class="part-btn" id="filterBtn-g" onclick="setRoom2Filter('g')">🟢 Verde (●)</button>
+            <button class="part-btn" id="filterBtn-b" onclick="setRoom2Filter('b')">🔵 Blu (■)</button>
+            <button class="part-btn" id="filterBtn-uv" onclick="setRoom2Filter('uv')">🟣 Luce UV (Formula)</button>
+          </div>
+          <canvas id="escapeFilterCanvas" width="510" height="175" style="cursor:none;"></canvas>
+          <div class="slider-box" style="display:flex; gap:0.45rem; align-items:center; flex-wrap:wrap; margin-top:0.7rem;">
+            <input type="number" id="room2TriInput" class="input-text" placeholder="▲" style="width:72px; padding:0.55rem 0.4rem; text-align:center;" />
+            <input type="number" id="room2CirInput" class="input-text" placeholder="●" style="width:72px; padding:0.55rem 0.4rem; text-align:center;" />
+            <input type="number" id="room2SqInput" class="input-text" placeholder="■" style="width:72px; padding:0.55rem 0.4rem; text-align:center;" />
+            <input type="number" id="room2Input" class="input-text" placeholder="Risultato UV" style="width:120px; padding:0.55rem 0.5rem; text-align:center; border-color:#db2777;" />
+            <button class="btn btn-primary" style="flex:1; justify-content:center;" onclick="checkRoom2()">🔓 Sblocca Stanza 2</button>
+          </div>
+        </div>
+
+        <!-- STANZA 3: LE 4 TAVOLE DI ISHIHARA A DOPPIA CIFRA -->
+        <div class="room-card" id="roomCard3">
+          <span class="room-status" id="roomStatus3">🔒 Bloccata</span>
+          <h3>🎨 Stanza 3: Le 4 Tavole di Ishihara (Frammento 🟢 VERDE)</h3>
+          <p style="color:var(--card-muted); font-weight:700; font-size:0.9rem; margin:0.4rem 0 0.6rem;">
+            Ogni tavola nasconde un <strong>numero a 2 cifre</strong>! Inserisci tutti e 4 i numeri (A, B, C, D) e calcola nell'ultima casella: <strong>(A + B + C − D) ÷ 16</strong>
+          </p>
+          <div style="display:flex; gap:0.45rem; margin-bottom:0.6rem; flex-wrap:wrap;">
+            <button class="part-btn active" id="plateBtn-0" onclick="selectIshiharaPlate(0)">Tavola A</button>
+            <button class="part-btn" id="plateBtn-1" onclick="selectIshiharaPlate(1)">Tavola B</button>
+            <button class="part-btn" id="plateBtn-2" onclick="selectIshiharaPlate(2)">Tavola C</button>
+            <button class="part-btn" id="plateBtn-3" onclick="selectIshiharaPlate(3)">Tavola D</button>
+          </div>
+          <canvas id="escapeIshiharaCanvas" width="510" height="175" style="width:100%; background:#090d24; border-radius:16px; border:3px solid #38bdf8; display:block;"></canvas>
+          <div class="slider-box" style="display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap; margin-top:0.7rem;">
+            <input type="number" id="ishiharaA" class="input-text" placeholder="A" style="width:76px; padding:0.55rem 0.4rem; text-align:center;" />
+            <input type="number" id="ishiharaB" class="input-text" placeholder="B" style="width:76px; padding:0.55rem 0.4rem; text-align:center;" />
+            <input type="number" id="ishiharaC" class="input-text" placeholder="C" style="width:76px; padding:0.55rem 0.4rem; text-align:center;" />
+            <input type="number" id="ishiharaD" class="input-text" placeholder="D" style="width:76px; padding:0.55rem 0.4rem; text-align:center;" />
+            <input type="number" id="ishiharaFormulaInput" class="input-text" placeholder="Risultato" style="width:105px; padding:0.55rem 0.5rem; text-align:center; border-color:#db2777;" />
+            <button class="btn btn-primary" style="flex:1; justify-content:center;" onclick="checkRoom3()">🔓 Verifica</button>
+          </div>
+        </div>
+
+        <!-- STANZA 4: CAMERA OSCURA ACCOPPIATA (LIGHTS-OUT 3x3) + OPERAZIONE CAPOVOLTA -->
+        <div class="room-card" id="roomCard4">
+          <span class="room-status" id="roomStatus4">🔒 Bloccata</span>
+          <h3>🙃 Stanza 4: Matrice Retinica Accoppiata (Frammento 🟣 VIOLETTO)</h3>
+          <p style="color:var(--card-muted); font-weight:700; font-size:0.9rem; margin:0.4rem 0 0.7rem;">
+            <strong>Attenzione:</strong> cliccando una cella inverti quella cella <strong>E le sue 4 vicine a croce (+)</strong>! Falle diventare tutte <strong>VERDI (⬆️)</strong> per aprire l'otturatore, poi risolvi l'operazione proiettata a testa in giù!
+          </p>
+          <canvas id="escapeCameraCanvas" width="510" height="190" style="width:100%; background:#090d24; border-radius:16px; border:3px solid #38bdf8; cursor:pointer; display:block;"></canvas>
+          <div class="slider-box" style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap; margin-top:0.7rem;">
+            <input type="number" id="room4Input" class="input-text" placeholder="Risultato operazione capovolta..." style="flex:1;" />
+            <button class="btn btn-outline" onclick="initCameraObscuraRoom()">🔄 Reset 3×3</button>
+            <button class="btn btn-primary" onclick="checkRoom4()">🔓 Sblocca</button>
+          </div>
+        </div>
+
+        <!-- STANZA 5: MICROSCOPIO A 3 STRATI CELATI (ALLA CIECA) -->
+        <div class="room-card" id="roomCard5">
+          <span class="room-status" id="roomStatus5">🔒 Bloccata</span>
+          <h3>🔬 Stanza 5: Microscopio a 3 Strati (Frammento 🟠 ARANCIONE)</h3>
+          <p style="color:var(--card-muted); font-weight:700; font-size:0.9rem; margin:0.4rem 0 0.6rem;">
+            Esamina uno alla volta i <strong>3 Strati (α, β, γ)</strong>: muovi i 3 cursori osservando la barra di <strong>Nitidezza Ottica %</strong> finché supera l'88% per scoprire <strong>X</strong>, <strong>Y</strong> e <strong>Z</strong>. Poi calcola: <strong>X − Y − Z = ?</strong>
+          </p>
+          <div style="display:flex; gap:0.45rem; margin-bottom:0.5rem;">
+            <button class="part-btn active" id="microLayerBtn-0" onclick="selectMicroLayer(0)">Strato α (Trova X)</button>
+            <button class="part-btn" id="microLayerBtn-1" onclick="selectMicroLayer(1)">Strato β (Trova Y)</button>
+            <button class="part-btn" id="microLayerBtn-2" onclick="selectMicroLayer(2)">Strato γ (Trova Z)</button>
+          </div>
+          <canvas id="escapeMicroCanvas" width="510" height="165" style="width:100%; background:#090d24; border-radius:16px; border:3px solid #38bdf8; display:block;"></canvas>
+          <div class="slider-box" style="margin-top:0.5rem; padding:0.7rem 0.9rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:900;">
+              <span>Risonanza Ottica:</span>
+              <span id="microValsDisplay" style="color:#db2777;">Strato α — Nitidezza Ottica: 0%</span>
+            </div>
+            <input type="range" id="microZoomSlider" min="50" max="375" step="25" value="100" oninput="updateMicroscopeRoom()" />
+            <input type="range" id="microFocusSlider" min="0" max="100" step="5" value="20" oninput="updateMicroscopeRoom()" />
+            <input type="range" id="microContrastSlider" min="0" max="100" step="5" value="20" oninput="updateMicroscopeRoom()" />
+            <div style="display:flex; gap:0.45rem; margin-top:0.4rem; flex-wrap:wrap; align-items:center;">
+              <input type="number" id="room5XInput" class="input-text" placeholder="X (α)" style="width:78px; padding:0.55rem 0.4rem; text-align:center;" />
+              <input type="number" id="room5YInput" class="input-text" placeholder="Y (β)" style="width:78px; padding:0.55rem 0.4rem; text-align:center;" />
+              <input type="number" id="room5ZInput" class="input-text" placeholder="Z (γ)" style="width:78px; padding:0.55rem 0.4rem; text-align:center;" />
+              <input type="number" id="room5Input" class="input-text" placeholder="X − Y − Z" style="width:105px; padding:0.55rem 0.5rem; text-align:center; border-color:#db2777;" />
+              <button class="btn btn-primary" style="flex:1; justify-content:center;" onclick="checkRoom5()">🔓 Sblocca Stanza 5</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STANZA 6: SEQUENZIATORE SINAPTICO A 6 NODI (4 ROUND) -->
+        <div class="room-card" id="roomCard6">
+          <span class="room-status" id="roomStatus6">🔒 Bloccata</span>
+          <h3>🧠 Stanza 6: Sinapsi a 6 Recettori (Frammento 🟡 GIALLO)</h3>
+          <p style="color:var(--card-muted); font-weight:700; font-size:0.9rem; margin:0.4rem 0 0.7rem;">
+            Supera <strong>4 Round consecutivi</strong> di memoria visiva rapida (da 4 fino a 7 impulsi consecutivi) sui <strong>6 Nodi Retinici</strong> senza mai sbagliare!
+          </p>
+
+          <div class="feedback-banner" id="simonStatusText" style="margin-top:0; margin-bottom:0.8rem; text-align:center;">
+            Premi "▶️ Avvia Sequenza" per iniziare il Round 1 di 4!
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:9px; margin:0.8rem 0;">
+            <button id="simonPad-0" onclick="pressSimonPad(0)" style="height:68px; border-radius:14px; background:#ef4444; border:3px solid #991b1b; color:#fff; font-weight:900; font-size:0.92rem; cursor:pointer; transition:all 0.15s;">🔴 Cono L</button>
+            <button id="simonPad-1" onclick="pressSimonPad(1)" style="height:68px; border-radius:14px; background:#22c55e; border:3px solid #14532d; color:#fff; font-weight:900; font-size:0.92rem; cursor:pointer; transition:all 0.15s;">🟢 Cono M</button>
+            <button id="simonPad-2" onclick="pressSimonPad(2)" style="height:68px; border-radius:14px; background:#3b82f6; border:3px solid #1e3a8a; color:#fff; font-weight:900; font-size:0.92rem; cursor:pointer; transition:all 0.15s;">🔵 Cono S</button>
+            <button id="simonPad-3" onclick="pressSimonPad(3)" style="height:68px; border-radius:14px; background:#eab308; border:3px solid #713f12; color:#1e1b4b; font-weight:900; font-size:0.92rem; cursor:pointer; transition:all 0.15s;">🟡 Bastoncello</button>
+            <button id="simonPad-4" onclick="pressSimonPad(4)" style="height:68px; border-radius:14px; background:#a855f7; border:3px solid #581c87; color:#fff; font-weight:900; font-size:0.92rem; cursor:pointer; transition:all 0.15s;">🟣 Bipolare</button>
+            <button id="simonPad-5" onclick="pressSimonPad(5)" style="height:68px; border-radius:14px; background:#06b6d4; border:3px solid #164e63; color:#fff; font-weight:900; font-size:0.92rem; cursor:pointer; transition:all 0.15s;">🩵 Gangliare</button>
+          </div>
+
+          <button class="btn btn-purple" style="width:100%; justify-content:center; margin-top:0.5rem;" onclick="startSimonSequence()">
+            ▶️ Avvia Sequenza Neurale (4 Round)
+          </button>
+        </div>
+      </div>
+
+      <!-- CASSAFORTE FINALE CON ENIGMA DELL'ORDINE SPETTRALE -->
+      <div class="final-vault">
+        <h3>🚪 Enigma Finale della Porta Blindata: L'Ordine Spettrale di Newton</h3>
+        <p style="color:var(--card-muted); font-weight:700; font-size:1rem; max-width:850px; margin:0.5rem auto;">
+          ⚠️ <strong>Attenzione:</strong> Ogni stanza risolta ti ha consegnato un numero associato a un <strong>Colore dello Spettro Visibile</strong> (guarda lo Zaino Ottico!).<br/>
+          Per aprire la Porta Blindata, <strong>NON inserirli in ordine di stanza (1..6)</strong>, ma ordinali dalla <strong>lunghezza d'onda più CORTA (400 nm)</strong> alla <strong>lunghezza d'onda più LUNGA (680 nm)</strong>:
+        </p>
+        <div style="display:flex; justify-content:center; gap:0.5rem; flex-wrap:wrap; margin:0.8rem 0; font-weight:900; font-size:0.88rem;">
+          <span class="age-badge" style="background:#f3e8ff; color:#6b21a8; border:2px solid #9333ea;">1° 🟣 VIOLETTO (400nm)</span>
+          <span class="age-badge" style="background:#dbeafe; color:#1e40af; border:2px solid #3b82f6;">2° 🔵 BLU (470nm)</span>
+          <span class="age-badge" style="background:#dcfce7; color:#166534; border:2px solid #22c55e;">3° 🟢 VERDE (530nm)</span>
+          <span class="age-badge" style="background:#fef9c3; color:#854d0e; border:2px solid #eab308;">4° 🟡 GIALLO (580nm)</span>
+          <span class="age-badge" style="background:#ffedd5; color:#9a3412; border:2px solid #f97316;">5° 🟠 ARANCIONE (610nm)</span>
+          <span class="age-badge" style="background:#fee2e2; color:#991b1b; border:2px solid #ef4444;">6° 🔴 ROSSO (680nm)</span>
+        </div>
+        <div class="vault-inputs">
+          <input type="text" maxlength="1" class="vault-digit" id="vault1" placeholder="🟣" />
+          <input type="text" maxlength="1" class="vault-digit" id="vault2" placeholder="🔵" />
+          <input type="text" maxlength="1" class="vault-digit" id="vault3" placeholder="🟢" />
+          <input type="text" maxlength="1" class="vault-digit" id="vault4" placeholder="🟡" />
+          <input type="text" maxlength="1" class="vault-digit" id="vault5" placeholder="🟠" />
+          <input type="text" maxlength="1" class="vault-digit" id="vault6" placeholder="🔴" />
+        </div>
+        <div style="display:flex; justify-content:center; gap:0.8rem; flex-wrap:wrap; align-items:center;">
+          <button class="btn btn-escape" style="font-size:1.15rem; padding:1rem 2.2rem;" onclick="unlockFinalVault()">
+            🚀 DECODIFICA SPETTRO E APRI LA PORTA!
+          </button>
+        </div>
+      </div>
+
+      <div class="save-score-bar">
+        <div>
+          <strong>🏆 Salva il Punteggio Escape Room in Classifica!</strong>
+          <div style="font-size:0.88rem; margin-top:0.2rem;">
+            Nome auto-generato: <strong class="js-player-name">...</strong> • Classe:
+            <input type="text" class="input-text js-player-class" placeholder="Es. 5A INF" style="width:115px; padding:0.4rem 0.65rem; text-transform:uppercase;" oninput="syncPlayerClass(this.value)" />
+            <button type="button" class="btn btn-outline" style="padding:0.4rem 0.7rem; font-size:0.85rem;" onclick="regeneratePlayerName()">🎲 Cambia Nome</button>
+          </div>
+        </div>
+        <button class="btn btn-escape" onclick="saveCategoryScore('escape')">💾 Salva Tempo &amp; Punti</button>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: CLASSIFICA DEL FESTIVAL ==================== -->
+    <section id="tab-leaderboard" class="tab-section">
+      <div class="section-header">
+        <div>
+          <span class="age-badge age-u16">Classifica Ufficiale • I.I.S. "G. Asproni - E. Fermi"</span>
+          <h2 style="margin-top:0.4rem;">🏆 Classifica del Festival della Scienza</h2>
+          <p>Inserisci la tua <strong>Classe</strong>, ottieni il tuo <strong>Nome Scienziato auto-generato</strong> e scala la classifica!</p>
+        </div>
+      </div>
+
+      <div class="save-score-bar" style="margin-top:0; margin-bottom:1.2rem;">
+        <div style="display:flex; flex-wrap:wrap; gap:0.9rem; align-items:center;">
+          <div>
+            <span style="font-size:0.85rem; font-weight:800; display:block;">🤖 Il tuo Nome Auto-Generato:</span>
+            <strong class="js-player-name" style="font-size:1.15rem; color:#7c3aed;">...</strong>
+            <button type="button" class="btn btn-outline" style="padding:0.35rem 0.7rem; font-size:0.85rem; margin-left:0.4rem;" onclick="regeneratePlayerName()">🎲 Rigenera</button>
+          </div>
+          <div>
+            <label for="leaderboardClassInput" style="font-size:0.85rem; font-weight:800; display:block;">🏫 La tua Classe (inseribile):</label>
+            <input type="text" id="leaderboardClassInput" class="input-text js-player-class" placeholder="Es. 3B, 4A, 5C..." style="width:160px; padding:0.45rem 0.75rem; text-transform:uppercase;" oninput="syncPlayerClass(this.value)" />
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="loadLeaderboard(AppState.leaderboardFilter)">🔄 Aggiorna Classifica</button>
+      </div>
+
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1rem;">
+        <button class="part-btn active" id="lbFilter-all" onclick="loadLeaderboard('all')">🌟 Tutti</button>
+        <button class="part-btn" id="lbFilter-u10" onclick="loadLeaderboard('u10')">🧒 Bambini (&lt;10)</button>
+        <button class="part-btn" id="lbFilter-u16" onclick="loadLeaderboard('u16')">🧑 Ragazzi (10–16)</button>
+        <button class="part-btn" id="lbFilter-escape" onclick="loadLeaderboard('escape')">🔐 Escape Room</button>
+      </div>
+
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nome Scienziato</th>
+            <th>Classe</th>
+            <th>Categoria / Gioco</th>
+            <th>Punteggio</th>
+            <th>Dettaglio</th>
+            <th>Elimina</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardTableBody">
+          <tr><td colspan="7" style="text-align:center;">Caricamento classifica...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      🦉 <strong>I.I.S. "G. Asproni - E. Fermi" — Iglesias (SU)</strong> • Festival della Scienza • Tema: <em>La Visione</em> 🌈
+    </p>
+  </footer>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/games-u10.js"></script>
+  <script src="/js/games-u16.js"></script>
+  <script src="/js/quickdraw.js"></script>
+  <script src="/js/escape-room.js"></script>
+</body>
+</html>

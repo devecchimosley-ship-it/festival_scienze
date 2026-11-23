@@ -1,0 +1,1088 @@
+:root {
+  --bg-sky-top: #1e1b4b;
+  --bg-sky-mid: #311068;
+  --bg-sky-bot: #0f172a;
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --card-text: #1e293b;
+  --card-muted: #475569;
+  --yellow: #facc15;
+  --yellow-dark: #ca8a04;
+  --orange: #fb923c;
+  --orange-dark: #ea580c;
+  --pink: #f472b6;
+  --pink-dark: #db2777;
+  --cyan: #22d3ee;
+  --cyan-dark: #0891b2;
+  --green: #4ade80;
+  --green-dark: #16a34a;
+  --purple: #c084fc;
+  --purple-dark: #7e22ce;
+  --blue: #60a5fa;
+  --blue-dark: #2563eb;
+  --radius-xl: 26px;
+  --radius-lg: 20px;
+  --radius-md: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI Rounded', 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(160deg, #1d2671 0%, #5b247a 45%, #1bcedf 100%);
+  background-attachment: fixed;
+  color: var(--card-text);
+  min-height: 100vh;
+  line-height: 1.55;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Sfondo con bolle e stelline fluttuanti per bambini */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(250, 204, 21, 0.25) 0, rgba(250, 204, 21, 0.25) 14px, transparent 15px),
+    radial-gradient(circle at 85% 15%, rgba(244, 114, 182, 0.28) 0, rgba(244, 114, 182, 0.28) 20px, transparent 21px),
+    radial-gradient(circle at 22% 80%, rgba(74, 222, 128, 0.25) 0, rgba(74, 222, 128, 0.25) 18px, transparent 19px),
+    radial-gradient(circle at 90% 75%, rgba(34, 211, 238, 0.28) 0, rgba(34, 211, 238, 0.28) 16px, transparent 17px),
+    radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.18) 0, rgba(255, 255, 255, 0.18) 10px, transparent 11px);
+  z-index: 0;
+}
+
+/* Canvas coriandoli di festa a tutto schermo */
+#confettiCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Barra Arcobaleno Superiore */
+.spectrum-bar {
+  height: 10px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff3b5c 0%,
+    #ff9f1c 14%,
+    #ffea00 28%,
+    #2ec4b6 42%,
+    #3a86ff 57%,
+    #8338ec 71%,
+    #ff006e 85%,
+    #ff3b5c 100%
+  );
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Header Giocoso */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 5px solid #facc15;
+  padding: 0.75rem 1.2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.header-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.brand-logo {
+  width: 58px;
+  height: 58px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ffea00, #ff6b00, #ff006e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1rem;
+  box-shadow: 0 5px 0 #c2410c, 0 8px 18px rgba(255, 107, 0, 0.4);
+  animation: bounceSlow 2.6s infinite ease-in-out;
+}
+
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-5px) rotate(4deg); }
+}
+
+.brand-text h1 {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #1e1b4b;
+  letter-spacing: 0.3px;
+}
+
+.brand-text p {
+  font-size: 0.82rem;
+  color: #db2777;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Menu Bottoni 3D Cartoon */
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.nav-btn {
+  background: #f1f5f9;
+  border: 3px solid #cbd5e1;
+  box-shadow: 0 5px 0 #94a3b8;
+  color: #1e293b;
+  padding: 0.55rem 1.05rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  background: #fef9c3;
+  border-color: #facc15;
+  box-shadow: 0 7px 0 #ca8a04;
+}
+
+.nav-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #94a3b8;
+}
+
+.nav-btn.active {
+  background: linear-gradient(135deg, #38bdf8, #3b82f6);
+  border-color: #1d4ed8;
+  box-shadow: 0 5px 0 #1e40af;
+  color: #ffffff;
+}
+
+.nav-btn.escape-nav {
+  background: #fdf2f8;
+  border-color: #f472b6;
+  box-shadow: 0 5px 0 #db2777;
+  color: #be185d;
+}
+
+.nav-btn.escape-nav.active {
+  background: linear-gradient(135deg, #ff006e, #8338ec);
+  border-color: #5b21b6;
+  box-shadow: 0 5px 0 #4c1d95;
+  color: #fff;
+}
+
+/* Barra Collezione Adesivi (Stickers) per i Bambini */
+.sticker-bar {
+  max-width: 1320px;
+  margin: 1rem auto 0;
+  padding: 0 1.2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.sticker-bar-inner {
+  background: rgba(255, 255, 255, 0.93);
+  border: 4px solid #38bdf8;
+  border-radius: 999px;
+  padding: 0.55rem 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.mascot-greeting {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 800;
+  color: #1e1b4b;
+  font-size: 0.96rem;
+}
+
+.mascot-avatar {
+  font-size: 1.8rem;
+  background: #fef08a;
+  border: 3px solid #eab308;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stickers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.sticker-badge {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  border: 2px dashed #94a3b8;
+  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 800;
+  filter: grayscale(1);
+  opacity: 0.65;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sticker-badge.earned {
+  background: linear-gradient(135deg, #fef08a, #fde047);
+  border: 2px solid #ca8a04;
+  color: #854d0e;
+  filter: grayscale(0);
+  opacity: 1;
+  transform: scale(1.07);
+  box-shadow: 0 3px 10px rgba(234, 179, 8, 0.45);
+}
+
+/* Container Principale */
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 1.3rem 1.2rem 4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.tab-section {
+  display: none;
+  animation: popIn 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tab-section.active {
+  display: block;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Hero Giocoso */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.8rem;
+  align-items: center;
+  background: var(--card-bg);
+  border: 5px solid #facc15;
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: 0 12px 0 #ca8a04, 0 20px 40px rgba(0, 0, 0, 0.28);
+  margin-bottom: 2rem;
+}
+
+.school-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #fef08a;
+  border: 2px solid #eab308;
+  color: #854d0e;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 900;
+  margin-bottom: 0.85rem;
+}
+
+.hero-content h2 {
+  font-size: 2.35rem;
+  line-height: 1.15;
+  margin-bottom: 0.9rem;
+  font-weight: 900;
+  color: #1e1b4b;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+  color: var(--card-muted);
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-bottom: 1.4rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+/* Bottoni 3D Cartoon per Bambini */
+.btn {
+  padding: 0.82rem 1.4rem;
+  border-radius: 18px;
+  font-weight: 900;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.14s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:active {
+  transform: translateY(4px) !important;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #fde047, #facc15);
+  color: #422006;
+  border-color: #ca8a04;
+  box-shadow: 0 6px 0 #a16207, 0 10px 20px rgba(250, 204, 21, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #fef08a, #fde047);
+}
+
+.btn-purple {
+  background: linear-gradient(180deg, #38bdf8, #0284c7);
+  color: #ffffff;
+  border-color: #0369a1;
+  box-shadow: 0 6px 0 #075985, 0 10px 20px rgba(2, 132, 199, 0.35);
+}
+
+.btn-purple:hover {
+  transform: translateY(-2px);
+}
+
+.btn-escape {
+  background: linear-gradient(180deg, #ff4d94, #db2777);
+  color: #ffffff;
+  border-color: #9d174d;
+  box-shadow: 0 6px 0 #831843, 0 10px 20px rgba(219, 39, 119, 0.35);
+}
+
+.btn-escape:hover {
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: #f1f5f9;
+  color: #1e293b;
+  border-color: #94a3b8;
+  box-shadow: 0 5px 0 #64748b;
+}
+
+.btn-outline:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+.hero-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#heroEyeCanvas {
+  width: 100%;
+  max-width: 430px;
+  height: 270px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #0f172a, #1e1b4b);
+  border: 5px solid #38bdf8;
+  box-shadow: 0 8px 0 #0284c7;
+  cursor: pointer;
+}
+
+.canvas-caption {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #7e22ce;
+  margin-top: 0.65rem;
+  text-align: center;
+}
+
+/* Titoli Sezioni su sfondo scuro */
+.section-header {
+  margin-bottom: 1.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 1.2rem 1.6rem;
+  border-radius: var(--radius-lg);
+  border: 4px solid #c084fc;
+  box-shadow: 0 7px 0 #7e22ce;
+}
+
+.section-header h2 {
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: #1e1b4b;
+}
+
+.section-header p {
+  color: var(--card-muted);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.age-badge {
+  display: inline-block;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 0.84rem;
+  text-transform: uppercase;
+}
+
+.age-u10 {
+  background: #fef08a;
+  color: #9a3412;
+  border: 2px solid #f59e0b;
+}
+
+.age-u16 {
+  background: #cffafe;
+  color: #0e7490;
+  border: 2px solid #06b6d4;
+}
+
+.age-escape {
+  background: #fce7f3;
+  color: #be185d;
+  border: 2px solid #ec4899;
+}
+
+/* Pannello Anatomia Occhio Cartoon */
+.anatomy-panel {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.5rem;
+  background: var(--card-bg);
+  border: 5px solid #38bdf8;
+  border-radius: var(--radius-xl);
+  padding: 1.6rem;
+  box-shadow: 0 10px 0 #0284c7;
+  margin-bottom: 2.2rem;
+}
+
+#anatomyCanvas {
+  width: 100%;
+  height: 320px;
+  background: linear-gradient(180deg, #0f172a, #1e293b);
+  border-radius: 18px;
+  border: 4px solid #60a5fa;
+}
+
+.anatomy-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.part-btn {
+  padding: 0.55rem 0.95rem;
+  border-radius: 14px;
+  background: #f1f5f9;
+  border: 3px solid #cbd5e1;
+  box-shadow: 0 4px 0 #94a3b8;
+  color: #1e293b;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 800;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.part-btn.active, .part-btn:hover {
+  background: #fde047;
+  color: #422006;
+  border-color: #ca8a04;
+  box-shadow: 0 4px 0 #a16207;
+  transform: translateY(-2px);
+}
+
+.anatomy-info-box {
+  background: #f8fafc;
+  border: 4px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.anatomy-info-box h3 {
+  color: #7e22ce;
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin-bottom: 0.6rem;
+}
+
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+}
+
+.fact-card {
+  background: var(--card-bg);
+  border: 4px solid #f472b6;
+  box-shadow: 0 8px 0 #db2777;
+  border-radius: var(--radius-lg);
+  padding: 1.35rem;
+  transition: transform 0.2s;
+}
+
+.fact-card:hover {
+  transform: translateY(-5px);
+}
+
+.fact-badge {
+  font-size: 0.8rem;
+  color: #db2777;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.fact-card h4 {
+  font-size: 1.2rem;
+  color: #1e1b4b;
+  margin: 0.35rem 0 0.5rem;
+}
+
+.fact-formula {
+  margin-top: 0.75rem;
+  padding: 0.55rem 0.8rem;
+  background: #fef9c3;
+  border-left: 5px solid #eab308;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #854d0e;
+}
+
+/* Selettore Giochi */
+.game-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.subgame-btn {
+  flex: 1;
+  min-width: 230px;
+  background: rgba(255, 255, 255, 0.93);
+  border: 4px solid #cbd5e1;
+  box-shadow: 0 7px 0 #94a3b8;
+  border-radius: 20px;
+  padding: 1.05rem 1.25rem;
+  color: #1e293b;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.subgame-btn:hover {
+  border-color: #facc15;
+  transform: translateY(-3px);
+}
+
+.subgame-btn.active {
+  background: linear-gradient(135deg, #fef9c3, #fde047);
+  border-color: #ca8a04;
+  box-shadow: 0 7px 0 #a16207;
+}
+
+.subgame-btn strong {
+  display: block;
+  font-size: 1.12rem;
+  font-weight: 900;
+  color: #1e1b4b;
+  margin-bottom: 0.25rem;
+}
+
+.subgame-btn span {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.game-stage {
+  display: none;
+  background: var(--card-bg);
+  border: 5px solid #4ade80;
+  border-radius: var(--radius-xl);
+  padding: 1.8rem;
+  box-shadow: 0 12px 0 #16a34a, 0 20px 45px rgba(0, 0, 0, 0.25);
+}
+
+.game-stage.active {
+  display: block;
+}
+
+.game-top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.4rem;
+  border-bottom: 3px dashed #cbd5e1;
+}
+
+.game-top-bar h3 {
+  font-size: 1.5rem;
+  color: #1e1b4b;
+  font-weight: 900;
+}
+
+.score-pill {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  border: 3px solid #15803d;
+  box-shadow: 0 4px 0 #166534;
+  color: #ffffff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+
+/* Controlli Torce Bambini Under 10 */
+.rgb-playground {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.torch-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.torch-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.3rem;
+  border-radius: 18px;
+  background: #f1f5f9;
+  border: 4px solid #cbd5e1;
+  box-shadow: 0 6px 0 #94a3b8;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 900;
+  font-family: inherit;
+  color: #1e293b;
+  transition: all 0.16s;
+}
+
+.torch-toggle.red.on {
+  background: #fee2e2;
+  border-color: #ef4444;
+  box-shadow: 0 6px 0 #b91c1c, 0 0 22px rgba(239, 68, 68, 0.45);
+  color: #991b1b;
+}
+
+.torch-toggle.green.on {
+  background: #dcfce7;
+  border-color: #22c55e;
+  box-shadow: 0 6px 0 #15803d, 0 0 22px rgba(34, 197, 94, 0.45);
+  color: #14532d;
+}
+
+.torch-toggle.blue.on {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  box-shadow: 0 6px 0 #1d4ed8, 0 0 22px rgba(59, 130, 246, 0.45);
+  color: #1e3a8a;
+}
+
+#rgbCanvas, #animalVisionCanvas, #illusionCanvas, #lensCanvas, #escapeFilterCanvas, #escapePrismCanvas {
+  width: 100%;
+  background: #090d24;
+  border-radius: 20px;
+  border: 4px solid #38bdf8;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+  display: block;
+}
+
+.animal-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.2rem;
+}
+
+.animal-card-btn {
+  padding: 1rem;
+  border-radius: 18px;
+  background: #fef9c3;
+  border: 4px solid #facc15;
+  box-shadow: 0 6px 0 #ca8a04;
+  color: #422006;
+  font-size: 1.15rem;
+  font-weight: 900;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.animal-card-btn:hover {
+  background: #fde047;
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* Griglia Stelline & Colori */
+.color-grid {
+  display: grid;
+  gap: 12px;
+  max-width: 440px;
+  aspect-ratio: 1 / 1;
+  margin: 1rem auto;
+  padding: 16px;
+  background: #0f172a;
+  border-radius: 24px;
+  border: 5px solid #f472b6;
+  box-shadow: 0 8px 0 #db2777;
+}
+
+.color-cell {
+  border-radius: 16px;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+}
+
+.color-cell:hover {
+  transform: scale(1.06);
+}
+
+.slider-box {
+  background: #f1f5f9;
+  padding: 1.1rem 1.3rem;
+  border-radius: 18px;
+  margin-top: 1rem;
+  border: 3px solid #cbd5e1;
+}
+
+.slider-box input[type="range"] {
+  width: 100%;
+  height: 12px;
+  margin: 0.7rem 0;
+  accent-color: #db2777;
+  cursor: pointer;
+}
+
+.feedback-banner {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  background: #e0f2fe;
+  border: 3px solid #38bdf8;
+  color: #0c4a6e;
+  font-weight: 800;
+}
+
+/* ESCAPE ROOM GIOCOSA */
+.escape-hud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--card-bg);
+  border: 5px solid #f472b6;
+  box-shadow: 0 10px 0 #db2777;
+  border-radius: var(--radius-xl);
+  padding: 1.3rem 1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.timer-box {
+  font-family: 'Courier New', monospace;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ef4444, #be123c);
+  padding: 0.4rem 1.2rem;
+  border-radius: 16px;
+  border: 3px solid #881337;
+  box-shadow: 0 5px 0 #881337;
+  letter-spacing: 2px;
+}
+
+.code-slots {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.code-slot {
+  width: 54px;
+  height: 62px;
+  border-radius: 16px;
+  background: #f1f5f9;
+  border: 4px solid #94a3b8;
+  box-shadow: 0 5px 0 #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: #475569;
+}
+
+.code-slot.unlocked {
+  background: #dcfce7;
+  border-color: #22c55e;
+  box-shadow: 0 5px 0 #15803d;
+  color: #15803d;
+  animation: bounceSlow 1.5s infinite;
+}
+
+.escape-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.6rem;
+}
+
+.room-card {
+  background: var(--card-bg);
+  border: 5px solid #60a5fa;
+  box-shadow: 0 10px 0 #2563eb;
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  position: relative;
+}
+
+.room-card h3 {
+  color: #1e1b4b;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.room-card.solved {
+  border-color: #22c55e;
+  box-shadow: 0 10px 0 #15803d;
+  background: #f0fdf4;
+}
+
+.room-status {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  padding: 0.32rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 2px solid #ef4444;
+}
+
+.room-card.solved .room-status {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #22c55e;
+}
+
+.pathway-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0.9rem 0;
+}
+
+.pathway-chip {
+  padding: 0.6rem 0.95rem;
+  border-radius: 14px;
+  background: #fef9c3;
+  border: 3px solid #eab308;
+  box-shadow: 0 4px 0 #ca8a04;
+  color: #422006;
+  cursor: pointer;
+  font-weight: 900;
+  font-family: inherit;
+  font-size: 0.92rem;
+}
+
+.pathway-chip:hover {
+  background: #fde047;
+  transform: translateY(-2px);
+}
+
+.pathway-selected {
+  min-height: 54px;
+  padding: 0.7rem;
+  background: #f1f5f9;
+  border-radius: 14px;
+  border: 3px dashed #94a3b8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.final-vault {
+  margin-top: 2rem;
+  background: var(--card-bg);
+  border: 6px solid #facc15;
+  box-shadow: 0 12px 0 #ca8a04;
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  text-align: center;
+}
+
+.final-vault h3 {
+  font-size: 1.6rem;
+  color: #1e1b4b;
+  font-weight: 900;
+}
+
+.vault-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 0.85rem;
+  margin: 1.2rem 0;
+}
+
+.vault-digit {
+  width: 68px;
+  height: 76px;
+  font-size: 2.2rem;
+  font-weight: 900;
+  text-align: center;
+  border-radius: 18px;
+  background: #fef9c3;
+  border: 4px solid #eab308;
+  box-shadow: 0 5px 0 #ca8a04;
+  color: #1e1b4b;
+}
+
+/* Tabella Classifica e Salva Punteggio */
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 4px solid #38bdf8;
+  box-shadow: 0 10px 0 #0284c7;
+}
+
+.leaderboard-table th, .leaderboard-table td {
+  padding: 1rem 1.1rem;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.leaderboard-table th {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.92rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.save-score-bar {
+  margin-top: 1.4rem;
+  padding: 1.1rem 1.3rem;
+  background: #fef9c3;
+  border: 4px solid #facc15;
+  box-shadow: 0 6px 0 #ca8a04;
+  border-radius: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: space-between;
+  color: #422006;
+}
+
+.input-text {
+  padding: 0.75rem 1.1rem;
+  border-radius: 14px;
+  border: 3px solid #94a3b8;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 800;
+  font-family: inherit;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 940px) {
+  .hero-grid, .anatomy-panel, .rgb-playground, .escape-rooms-grid {
+    grid-template-columns: 1fr;
+  }
+}
